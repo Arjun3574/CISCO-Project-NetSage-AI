@@ -1,0 +1,239 @@
+{
+  "tool": "NetSage AI - Human Review Log",
+  "reviewer": "User",
+  "reviews": [
+    {
+      "case_id": "1",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correct diagnosis and evidence are consistent with the observed duplicate IP address error and ARP table conflict.",
+      "ai_root_cause": "Duplicate IP address conflict involving 192.168.1.10.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "2",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Diagnosis is accurate and directly supported by CDP native VLAN mismatch syslog (VLAN 20 vs VLAN 10) and show interface trunk output.",
+      "ai_root_cause": "Trunk port native VLAN mismatch between connected switches on interface FastEthernet0/1.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "3",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately identified port security violation on Fa0/1 resulting in secure-shutdown state; recovery fix steps are exact.",
+      "ai_root_cause": "Port security violation on FastEthernet0/1 caused the port to enter a Secure-shutdown state after a new computer was connected.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "4",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified dot1Q encapsulation mismatch (dot1Q 20 configured on sub-interface .10) and provided proper reconfiguration syntax.",
+      "ai_root_cause": "Router-on-a-Stick sub-interface GigabitEthernet0/0/0.10 is configured with encapsulation dot1Q 20 instead of VLAN 10.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "5",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately determined that administratively down parent interface G0/0/0 is causing all dependent sub-interfaces to fail.",
+      "ai_root_cause": "The physical parent interface GigabitEthernet0/0/0 is administratively down, which forces all dependent sub-interfaces (GigabitEthernet0/0/0.10, GigabitEthernet0/0/0.20, and GigabitEthernet0/0/0.30) to remain down.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "6",
+      "status": "Edited",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "AI identified port negotiation failure but provided ambiguous fix guidance mixing incompatible LACP and PAgP protocols.",
+      "ai_root_cause": "EtherChannel bundle negotiation failure using LACP protocol, leaving member ports in stand-alone state.",
+      "corrected_root_cause": "EtherChannel protocol/mode mismatch between local switch configured for LACP (channel-group mode active) and remote switch configured for PAgP (desirable) or ON mode, preventing bundle negotiation.",
+      "corrected_fix_steps": [
+        "Verify and align the EtherChannel protocol on both switches (use LACP 'mode active' or PAgP 'mode desirable' on both ends).",
+        "Ensure channel-group number and port-channel interface definitions match.",
+        "Verify Port-Channel status with 'show etherchannel summary' to ensure ports transition to bundled (P) state."
+      ],
+      "correction_summary": "The AI treated this as a generic LACP negotiation failure and incorrectly suggested 'active or desirable' as interchangeable options rather than explaining that active (LACP) and desirable (PAgP) are incompatible protocols."
+    },
+    {
+      "case_id": "7",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified mismatched allowed VLAN lists (10,20 vs 10,30) causing EtherChannel consistency check failure.",
+      "ai_root_cause": "EtherChannel member ports FastEthernet0/1 and FastEthernet0/2 have mismatched allowed VLAN configurations causing consistency check failure.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "8",
+      "status": "Edited",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "AI diagnosed missing DHCP relay but omitted specific helper IP and client renewal verification step.",
+      "ai_root_cause": "The DHCP relay agent configuration is missing on the router sub-interface GigabitEthernet0/0.10.",
+      "corrected_root_cause": "Router sub-interface GigabitEthernet0/0.10 is missing the DHCP relay agent configuration ('ip helper-address 192.168.20.10') to forward broadcast DHCP requests to the central DHCP server.",
+      "corrected_fix_steps": [
+        "Enter sub-interface configuration mode: 'interface GigabitEthernet0/0.10'.",
+        "Configure the DHCP relay address: 'ip helper-address 192.168.20.10'.",
+        "Verify IP reachability between Router1 and the DHCP server at 192.168.20.10.",
+        "Execute 'ipconfig /renew' on PC0 to verify lease acquisition."
+      ],
+      "correction_summary": "The AI provided a generic fix without the exact CLI command and destination DHCP server IP address (192.168.20.10), and missed the client-side renewal verification step."
+    },
+    {
+      "case_id": "9",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified dangerous PortFast configuration on inter-switch trunk Fa0/1 and gave proper remediation command.",
+      "ai_root_cause": "PortFast is incorrectly enabled on an inter-switch trunk port (FastEthernet0/1), which can cause temporary Layer 2 loops and topology instability.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "10",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified invalid static route next-hop 10.1.1.5 not residing within directly connected subnet 10.1.1.0/30.",
+      "ai_root_cause": "Static route uses an invalid next-hop address 10.1.1.5 that is not on the directly connected subnet.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "11",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately diagnosed missing return static route to 192.168.10.0/24 on Router1 causing asymmetric routing ICMP timeouts.",
+      "ai_root_cause": "Router1 is missing a return route to the 192.168.10.0/24 network.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "12",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified that backup static route lacks a higher administrative distance (floating static route), resulting in equal-cost load sharing.",
+      "ai_root_cause": "Floating static route is not properly configured as a backup because both static routes to 192.168.20.0/24 share the same administrative distance of 1, causing load balancing instead of failover.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "13",
+      "status": "Edited",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "AI identified timer mismatch but suggested suboptimal next command and generic fix steps missing exact interface timer commands.",
+      "ai_root_cause": "OSPF neighbor adjacency failure due to a mismatched Hello timer interval configuration.",
+      "corrected_root_cause": "OSPF Hello interval mismatch on GigabitEthernet0/0/0: Router0 is configured with Hello 5s (and Dead 40s) while Router1 uses default Hello 10s (Dead 40s), causing neighbor adjacency to drop due to dead timer expiration.",
+      "corrected_fix_steps": [
+        "Inspect interface OSPF timers on Router1 using 'show ip ospf interface GigabitEthernet0/0/0'.",
+        "On Router0 interface GigabitEthernet0/0/0, revert the Hello timer to match Router1 using 'ip ospf hello-interval 10'.",
+        "Verify Dead timer consistency across both sides ('ip ospf dead-interval 40').",
+        "Verify neighbor adjacency reaches FULL state using 'show ip ospf neighbor'."
+      ],
+      "correction_summary": "The AI proposed 'show ip ospf neighbor' as the next command which does not reveal timer configuration details, and provided generic fix advice without specifying the exact interface configuration commands."
+    },
+    {
+      "case_id": "14",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately identified OSPF Area ID mismatch (Area 0 vs Area 1) on transit link GigabitEthernet0/0/0 based on %OSPF-4-ERRRCV log.",
+      "ai_root_cause": "OSPF area ID mismatch between Router0 (Area 0) and Router1 (Area 1) on GigabitEthernet0/0/0.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "15",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly detected passive-interface configured on transit link GigabitEthernet0/0/0 suppressing OSPF Hello exchanges.",
+      "ai_root_cause": "OSPF is configured as a passive interface on the transit link GigabitEthernet0/0/0, preventing Hello packets from being sent and stopping neighbor adjacency from establishing.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "16",
+      "status": "Edited",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "AI gave flawed ACL placement guidance advising standard ACL placement closer to source rather than destination.",
+      "ai_root_cause": "A standard IP access list (ACL 10) is applied inbound on the WAN interface GigabitEthernet0/0/0, leading to improper traffic filtering.",
+      "corrected_root_cause": "Standard ACL 10 is incorrectly applied in the inbound direction on the egress WAN interface GigabitEthernet0/0/0, where it improperly filters incoming WAN traffic rather than filtering outbound traffic from source host 192.168.1.50.",
+      "corrected_fix_steps": [
+        "Remove the inbound access group from the WAN interface: 'interface GigabitEthernet0/0/0' followed by 'no ip access-group 10 in'.",
+        "Apply the standard ACL in the outbound direction ('ip access-group 10 out') or replace it with an Extended ACL applied inbound on the LAN ingress interface closest to the source.",
+        "Verify traffic filtering with 'show ip interface GigabitEthernet0/0/0' and test reachability from host 192.168.1.50."
+      ],
+      "correction_summary": "The AI incorrectly advised placing the standard ACL 'closer to the source', which violates Cisco design principles (standard ACLs belong near the destination; extended ACLs belong near the source) and failed to specify outbound application."
+    },
+    {
+      "case_id": "17",
+      "status": "Edited",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "AI diagnosis is valid but fix steps lack precise Cisco IOS extended ACL syntax for established TCP return traffic.",
+      "ai_root_cause": "The inbound ACL on the WAN interface permits ICMP traffic but lacks a rule to allow established TCP return traffic, causing web traffic failures.",
+      "corrected_root_cause": "Extended ACL 'WAN_IN' applied inbound on the WAN interface allows inbound ICMP but lacks an established TCP rule ('permit tcp any any established'), dropping return TCP ACK/data packets for internally initiated HTTP/HTTPS sessions.",
+      "corrected_fix_steps": [
+        "Enter extended ACL configuration mode: 'ip access-list extended WAN_IN'.",
+        "Insert the rule: 'permit tcp any any established'.",
+        "Verify ACL rules using 'show access-lists WAN_IN'.",
+        "Test internal client web browsing (HTTP/HTTPS) and ICMP connectivity to confirm both operate properly."
+      ],
+      "correction_summary": "The AI provided high-level fix steps without the precise Cisco IOS extended ACL syntax ('permit tcp any any established') needed for stateful TCP return filtering."
+    },
+    {
+      "case_id": "18",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately identified that extended ACL FILTER_LAN lacks explicit UDP permits for DNS (port 53) and DHCP (ports 67/68), causing implicit deny drops.",
+      "ai_root_cause": "The inbound extended access list FILTER_LAN blocks DHCP (UDP 67/68) and DNS (UDP 53) traffic because it only permits TCP ports 80 (www) and 443.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "19",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly identified missing 'ip nat inside' configuration on LAN interface GigabitEthernet0/0/1.",
+      "ai_root_cause": "The internal LAN interface GigabitEthernet0/0/1 is missing the 'ip nat inside' command, preventing Network Address Translation from functioning.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "20",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Accurately identified subnet mismatch between NAT ACL 1 (192.168.1.0/24) and actual inside LAN interface IP (192.168.2.1/24).",
+      "ai_root_cause": "The NAT access list does not match the actual inside LAN subnet.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    },
+    {
+      "case_id": "21",
+      "status": "Accepted",
+      "reviewed_at": "2026-08-29T19:26:18",
+      "reviewer_reason": "Correctly detected inverted static NAT parameters where private IP 192.168.1.50 was configured as inside global instead of inside local.",
+      "ai_root_cause": "Static NAT mapping has the public and private IP addresses inverted.",
+      "corrected_root_cause": "",
+      "corrected_fix_steps": [],
+      "correction_summary": ""
+    }
+  ]
+}
